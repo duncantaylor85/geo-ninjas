@@ -49,14 +49,10 @@
         >GeoNinjas!</v-toolbar-title
       >
       <v-spacer></v-spacer>
-      <v-tooltip bottom>
-        <v-btn to="/signup" icon
-          ><v-icon
-            >mdi-account-plus</v-icon
-          ></v-btn
-        >
-        <span>Sign up</span>
-      </v-tooltip>
+
+      <v-btn to="/signup" icon
+        ><v-icon>mdi-account-plus</v-icon></v-btn
+      >
 
       <v-btn icon to="/login"
         ><v-icon>mdi-login</v-icon></v-btn

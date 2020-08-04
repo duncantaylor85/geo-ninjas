@@ -24,6 +24,7 @@
 
           <v-card-actions>
             <v-btn
+              @click="login"
               dark
               color="deep-purple"
               class="mx-auto"
@@ -37,11 +38,7 @@
 </template>
 
 <script>
-import {
-  db,
-  auth,
-  usersCollection,
-} from "@/firebase/init";
+import { auth } from "@/firebase/init";
 
 export default {
   name: "Login",
@@ -51,7 +48,25 @@ export default {
       password: null,
     };
   },
-  methods: {},
+  methods: {
+    login() {
+      if (this.email && this.password) {
+        auth
+          .signInWithEmailAndPassword(
+            this.email,
+            this.password
+          )
+          .then((cred) => {
+            console.log(cred.user);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      } else {
+        console.log("Error");
+      }
+    },
+  },
 };
 </script>
 
