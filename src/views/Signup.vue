@@ -133,9 +133,6 @@ export default {
                           });
                         });
                     } else {
-                      console.log(
-                        "User does not exist: "
-                      );
                     }
                   }
                 );

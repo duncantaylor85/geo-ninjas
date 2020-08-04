@@ -57,7 +57,7 @@ export default {
             this.password
           )
           .then((cred) => {
-            console.log(cred.user);
+            this.$router.push({ name: "GMap" });
           })
           .catch((err) => {
             console.log(err.message);

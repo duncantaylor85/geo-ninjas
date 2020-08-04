@@ -11,8 +11,8 @@ export default {
   name: "GMap",
   data() {
     return {
-      lat: 1,
-      lng: 1,
+      lat: 53,
+      lng: 10,
     };
   },
   methods: {
@@ -33,7 +33,6 @@ export default {
     },
   },
   mounted() {
-    console.log(auth.currentUser);
     this.renderMap();
   },
 };

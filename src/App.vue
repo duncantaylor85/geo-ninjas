@@ -12,7 +12,11 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/login">
+        <v-list-item
+          v-if="loginIcon"
+          link
+          to="/login"
+        >
           <v-list-item-action>
             <v-icon>mdi-login</v-icon>
           </v-list-item-action>
@@ -22,7 +26,11 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="logout">
+        <v-list-item
+          v-if="logoutIcon"
+          link
+          @click="logout"
+        >
           <v-list-item-action>
             <v-icon>mdi-logout</v-icon>
           </v-list-item-action>
@@ -54,10 +62,13 @@
         ><v-icon>mdi-account-plus</v-icon></v-btn
       >
 
-      <v-btn icon to="/login"
+      <v-btn v-if="loginIcon" icon to="/login"
         ><v-icon>mdi-login</v-icon></v-btn
       >
-      <v-btn icon @click="logout"
+      <v-btn
+        v-if="logoutIcon"
+        icon
+        @click="logout"
         ><v-icon>mdi-logout</v-icon></v-btn
       >
     </v-app-bar>
@@ -86,10 +97,29 @@ export default {
 
   data: () => ({
     drawer: false,
-
+    logoutIcon: null,
+    loginIcon: null,
     //
   }),
+  created() {},
+  mounted() {
+    this.updateUserIcons();
+  },
+  updated() {
+    this.updateUserIcons();
+  },
   methods: {
+    updateUserIcons() {
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          this.logoutIcon = true;
+          this.loginIcon = false;
+        } else {
+          this.logoutIcon = false;
+          this.loginIcon = true;
+        }
+      });
+    },
     logout() {
       auth.signOut().then(() => {
         this.$router.push({ name: "Signup" });
