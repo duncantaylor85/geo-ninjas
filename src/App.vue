@@ -1,32 +1,104 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-navigation-drawer app v-model="drawer">
+      <v-list dense>
+        <v-list-item link to="/signup">
+          <v-list-item-action>
+            <v-icon>mdi-account-plus</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              Sign up
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link to="/login">
+          <v-list-item-action>
+            <v-icon>mdi-login</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              Login
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link @click="logout">
+          <v-list-item-action>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              Logout
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar
+      dark
+      app
+      color="deep-purple darken-1"
+    >
+      <v-app-bar-nav-icon
+        @click.stop="drawer = !drawer"
+      ></v-app-bar-nav-icon>
+      <v-toolbar-title
+        @click="$router.push('/')"
+        style="cursor: pointer"
+        >GeoNinjas!</v-toolbar-title
+      >
+      <v-spacer></v-spacer>
+      <v-tooltip bottom>
+        <v-btn to="/signup" icon
+          ><v-icon
+            >mdi-account-plus</v-icon
+          ></v-btn
+        >
+        <span>Sign up</span>
+      </v-tooltip>
+
+      <v-btn icon to="/login"
+        ><v-icon>mdi-login</v-icon></v-btn
+      >
+      <v-btn icon @click="logout"
+        ><v-icon>mdi-logout</v-icon></v-btn
+      >
+    </v-app-bar>
+    <!-- Sizes your content based upon application components -->
+    <v-main>
+      <!-- Provides the application the proper gutter -->
+      <v-container fluid>
+        <!-- If using vue-router -->
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+
+    <v-footer app>
+      <!-- -->
+    </v-footer>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import { auth } from "@/firebase/init";
 
-#nav {
-  padding: 30px;
-}
+export default {
+  name: "App",
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  components: {},
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  data: () => ({
+    drawer: false,
+
+    //
+  }),
+  methods: {
+    logout() {
+      auth.signOut().then(() => {
+        this.$router.push({ name: "Signup" });
+      });
+    },
+  },
+};
+</script>
