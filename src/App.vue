@@ -101,7 +101,7 @@ export default {
     loginIcon: null,
     //
   }),
-  created() {},
+
   mounted() {
     this.updateUserIcons();
   },
