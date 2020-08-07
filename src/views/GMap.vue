@@ -17,30 +17,47 @@ export default {
   },
   methods: {
     renderMap() {
-      const map = new google.maps.Map(
-        document.getElementById("map"),
-        {
-          center: {
-            lat: this.lat,
-            lng: this.lng,
-          },
-          zoom: 6,
-          maxZoom: 15,
-          minZoom: 3,
-          streetViewControl: false,
-        }
-      );
+      const map = new google.maps.Map(document.getElementById("map"), {
+        center: {
+          lat: this.lat,
+          lng: this.lng,
+        },
+        zoom: 6,
+        maxZoom: 15,
+        minZoom: 3,
+        streetViewControl: false,
+      });
     },
   },
   mounted() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          this.lat = pos.coords.latitude;
-          this.lng = pos.coords.longitude;
-          this.renderMap();
-        }
-      ),
+    let user = auth.currentUser;
+    console.log("User: ");
+    console.log(user);
+
+    if (navigator.geolocation && user) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        this.lat = pos.coords.latitude;
+        this.lng = pos.coords.longitude;
+
+        db.collection("users")
+          .where("user_id", "==", user.uid)
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              db.collection("users")
+                .doc(doc.id)
+                .update({
+                  geolocation: {
+                    lat: this.lat,
+                    lng: this.lng,
+                  },
+                });
+            });
+          })
+          .then(() => {
+            this.renderMap();
+          });
+      }),
         (err) => {
           console.log(err);
           this.renderMap();
